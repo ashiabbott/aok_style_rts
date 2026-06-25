@@ -1,0 +1,224 @@
+:root {
+  --ink: #1b211e;
+  --parchment: #e9dcc0;
+  --panel: rgba(14, 20, 18, 0.92);
+  --panel-edge: rgba(233, 220, 192, 0.22);
+  --accent: #d8a93a;
+  --player: #3da5e0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: #0a0f0d;
+  color: var(--parchment);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+#app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+}
+
+.game-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.hud-root {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hud-root button,
+.hud-root .res-chip {
+  pointer-events: auto;
+}
+
+/* Top resource bar */
+.hud-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  background: linear-gradient(to bottom, rgba(10, 15, 13, 0.95), rgba(10, 15, 13, 0));
+}
+
+.res-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--parchment);
+  background: var(--panel);
+  border: 1px solid var(--panel-edge);
+  border-radius: 9px;
+  backdrop-filter: blur(4px);
+}
+
+.res-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.3);
+}
+
+.res-val {
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+}
+
+.res-chip.pop {
+  margin-left: auto;
+}
+.res-chip.pop.warn {
+  color: #ffcf5e;
+  border-color: #c98a2a;
+}
+.res-chip.time {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Bottom command panel */
+.hud-panel {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  display: flex;
+  gap: 14px;
+  align-items: stretch;
+  max-width: min(620px, calc(100vw - 250px));
+  padding: 12px 14px;
+  background: var(--panel);
+  border: 1px solid var(--panel-edge);
+  border-radius: 12px;
+  backdrop-filter: blur(6px);
+  pointer-events: auto;
+}
+
+.hud-selection {
+  min-width: 200px;
+  border-right: 1px solid var(--panel-edge);
+  padding-right: 14px;
+}
+
+.sel-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.sel-body {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: #cdbf9e;
+}
+
+.hud-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-content: flex-start;
+}
+
+.action-btn {
+  appearance: none;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--ink);
+  background: linear-gradient(to bottom, #f0e4c6, #d8c79c);
+  border: 1px solid #b29a63;
+  border-radius: 8px;
+  padding: 9px 12px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset, 0 3px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.08s ease, filter 0.12s ease;
+}
+
+.action-btn:hover {
+  filter: brightness(1.06);
+}
+.action-btn:active {
+  transform: translateY(1px);
+}
+.action-btn:focus-visible {
+  outline: 2.5px solid var(--player);
+  outline-offset: 2px;
+}
+
+/* Help + toast */
+.hud-help {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: #b9ad8d;
+  background: rgba(10, 15, 13, 0.7);
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--panel-edge);
+  white-space: nowrap;
+}
+
+.hud-help b {
+  color: var(--accent);
+}
+
+.hud-toast {
+  position: absolute;
+  top: 64px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  padding: 9px 16px;
+  background: rgba(156, 53, 38, 0.95);
+  color: #fff;
+  font-weight: 600;
+  font-size: 13px;
+  border-radius: 9px;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+.hud-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 720px) {
+  .hud-help {
+    display: none;
+  }
+  .hud-panel {
+    max-width: calc(100vw - 24px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .action-btn,
+  .hud-toast {
+    transition: none;
+  }
+}
