@@ -81,6 +81,18 @@ interface AokHook {
     playerUnits: number;
     enemyUnits: number;
     buildings: number;
+    metrics: {
+      selected: number;
+      idlePlayerUnits: number;
+      gatheringVillagers: number;
+      builders: number;
+      attackers: number;
+      trainingQueued: number;
+      incompleteBuildings: number;
+      resourceNodes: number;
+      depletedResourceNodes: number;
+      resourceRemaining: number;
+    };
     resources: typeof game.resources;
     pop: number;
     popCap: number;
@@ -93,16 +105,46 @@ const hook: AokHook = {
     let playerUnits = 0;
     let enemyUnits = 0;
     let buildings = 0;
+    let idlePlayerUnits = 0;
+    let gatheringVillagers = 0;
+    let builders = 0;
+    let attackers = 0;
+    let trainingQueued = 0;
+    let incompleteBuildings = 0;
     for (const e of game.entities.values()) {
-      if (e.category === "building") buildings++;
-      else if (e.owner === "player") playerUnits++;
-      else if (e.owner === "enemy") enemyUnits++;
+      if (e.category === "building") {
+        buildings++;
+        trainingQueued += e.trainQueue?.length ?? 0;
+        if ((e.buildProgress ?? 1) < 1) incompleteBuildings++;
+      } else if (e.owner === "player") {
+        playerUnits++;
+        if (e.task?.type === "idle") idlePlayerUnits++;
+        if (e.kind === "villager" && e.task?.type === "gather") gatheringVillagers++;
+        if (e.task?.type === "build") builders++;
+        if (e.task?.type === "attack") attackers++;
+      } else if (e.owner === "enemy") {
+        enemyUnits++;
+      }
     }
+    const resourceRemaining = game.grid.nodes.reduce((sum, node) => sum + node.amount, 0);
+    const depletedResourceNodes = game.grid.nodes.filter((node) => node.amount <= 0).length;
     return {
       entities: game.entities.size,
       playerUnits,
       enemyUnits,
       buildings,
+      metrics: {
+        selected: game.selected.length,
+        idlePlayerUnits,
+        gatheringVillagers,
+        builders,
+        attackers,
+        trainingQueued,
+        incompleteBuildings,
+        resourceNodes: game.grid.nodes.length,
+        depletedResourceNodes,
+        resourceRemaining,
+      },
       resources: { ...game.resources },
       pop: game.pop,
       popCap: game.popCap,

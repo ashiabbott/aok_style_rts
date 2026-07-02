@@ -30,8 +30,9 @@ fixed-timestep simulation loop.
 ## Verification spine (Stage 4)
 - **Live verify command:** `npm run build` (`tsc` strict + `vite build`) — must pass.
 - **Scene smoke (live):** `npm run preview`, load the page; `window.__aok.state()` shows the loop advancing
-  (time increases), the world populated (player units + enemy units + buildings), and issuing a gather order
-  raises the wood count (villager walk → harvest → deposit). Zero console errors.
+  (time increases), the world populated (player units + enemy units + buildings), deterministic session metrics
+  for unit tasks / queues / resource nodes, and issuing a gather order raises the wood count
+  (villager walk → harvest → deposit). Zero console errors.
 - **Definition of Done:** `npm run build` passes under Node ≥ 20.19; the scene boots; the loop advances; selection
   + a right-click order still produce the expected unit task; no console errors.
 

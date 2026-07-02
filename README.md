@@ -32,4 +32,6 @@ npm run preview    # serve the production build
 | Jump | click the minimap |
 | Cancel | Esc |
 
-`window.__aok` exposes live game state for verification. See `AGENTS.md` for the full induction record.
+`window.__aok` exposes live game state for verification, including deterministic session metrics for
+selected entities, unit tasks, training queues, incomplete buildings, and remaining map resources. See
+`AGENTS.md` for the full induction record.
