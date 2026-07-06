@@ -30,6 +30,7 @@ npm run preview    # serve the production build
 | Pan | WASD / arrows / screen edge |
 | Zoom | mouse wheel |
 | Jump | click the minimap |
+| Cycle idle villager | `.` next / `,` previous |
 | Cancel | Esc |
 
 `window.__aok` exposes live game state for verification, including deterministic session metrics for

@@ -277,6 +277,29 @@ export class Game {
     return this.selected.map((id) => this.entities.get(id)).filter((e): e is Entity => !!e);
   }
 
+  selectNextIdleVillager(reverse = false): boolean {
+    const idleVillagers = [...this.entities.values()]
+      .filter((e) => e.owner === "player" && e.kind === "villager" && e.task?.type === "idle")
+      .sort((a, b) => a.id - b.id);
+    if (idleVillagers.length === 0) {
+      this.notify("No idle villagers");
+      return false;
+    }
+
+    const currentIdleIndex = idleVillagers.findIndex((e) => e.selected);
+    let nextIndex = reverse ? idleVillagers.length - 1 : 0;
+    if (currentIdleIndex >= 0) {
+      nextIndex = (currentIdleIndex + (reverse ? -1 : 1) + idleVillagers.length) % idleVillagers.length;
+    }
+    const next = idleVillagers[nextIndex];
+    this.clearSelection();
+    next.selected = true;
+    this.selected = [next.id];
+    this.camera.centerOn(next.pos);
+    this.onChange?.();
+    return true;
+  }
+
   // ── movement / tasks ───────────────────────────────────────
   private moveUnit(u: Entity, dest: Vec2): void {
     const start = Grid.worldToTile(u.pos);

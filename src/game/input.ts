@@ -34,6 +34,10 @@ export class Input {
         if (this.game.placement) this.game.cancelPlacement();
         else this.game.clearSelection();
         this.game.onChange?.();
+      } else if (e.key === ".") {
+        this.game.selectNextIdleVillager();
+      } else if (e.key === ",") {
+        this.game.selectNextIdleVillager(true);
       }
     });
     window.addEventListener("keyup", (e) => this.keys.delete(e.key.toLowerCase()));
