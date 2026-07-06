@@ -300,6 +300,23 @@ export class Game {
     return true;
   }
 
+  selectPrimaryTownCenter(): boolean {
+    const townCenter = [...this.entities.values()]
+      .filter((e) => e.owner === "player" && e.kind === "town_center")
+      .sort((a, b) => a.id - b.id)[0];
+    if (!townCenter) {
+      this.notify("No Town Center");
+      return false;
+    }
+
+    this.clearSelection();
+    townCenter.selected = true;
+    this.selected = [townCenter.id];
+    this.camera.centerOn(townCenter.pos);
+    this.onChange?.();
+    return true;
+  }
+
   // ── movement / tasks ───────────────────────────────────────
   private moveUnit(u: Entity, dest: Vec2): void {
     const start = Grid.worldToTile(u.pos);

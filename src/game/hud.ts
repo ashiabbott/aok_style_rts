@@ -52,7 +52,7 @@ export class Hud {
 
     const help = el("div", "hud-help");
     help.innerHTML =
-      "<b>Left-drag</b> select · <b>Right-click</b> order · <b>.</b>/<b>,</b> idle villager · <b>Wheel</b> zoom · <b>WASD</b> pan";
+      "<b>Left-drag</b> select · <b>Right-click</b> order · <b>.</b>/<b>,</b> idle villager · <b>H</b> Town Center · <b>Wheel</b> zoom · <b>WASD</b> pan";
 
     this.toast = el("div", "hud-toast");
 

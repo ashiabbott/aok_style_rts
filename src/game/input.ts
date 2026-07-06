@@ -38,6 +38,8 @@ export class Input {
         this.game.selectNextIdleVillager();
       } else if (e.key === ",") {
         this.game.selectNextIdleVillager(true);
+      } else if (e.key.toLowerCase() === "h") {
+        this.game.selectPrimaryTownCenter();
       }
     });
     window.addEventListener("keyup", (e) => this.keys.delete(e.key.toLowerCase()));
