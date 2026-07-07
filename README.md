@@ -9,6 +9,7 @@ strategy game on. No game-engine dependency; just TypeScript + an HTML5 canvas.
 - **Units:** Villager (gather / build / fight) and Soldier (attack-move, auto-acquire)
 - **Buildings:** Town Center (trains villagers, resource drop-off), House (pop cap), Barracks (trains soldiers)
 - **Controls:** drag-select, right-click contextual orders (move / gather / attack), building placement, rally points
+- **Rally visibility:** selected buildings show their rally line and flag on the map
 - **Systems:** grid **A\*** pathfinding, gathering FSM, construction, training queues, basic combat, camera pan/zoom, **minimap**
 - **Fixed-timestep simulation loop** decoupled from rendering
 
@@ -27,6 +28,7 @@ npm run preview    # serve the production build
 | Select | left-click / left-drag box |
 | Move · Gather · Attack | right-click (contextual) |
 | Build | select a villager → Build House / Barracks → click map |
+| Set rally point | select a building → right-click the map |
 | Pan | WASD / arrows / screen edge |
 | Zoom | mouse wheel |
 | Jump | click the minimap |

@@ -17,6 +17,7 @@ export function render(ctx: CanvasRenderingContext2D, game: Game, input: RenderI
   ctx.fillRect(0, 0, camera.vw, camera.vh);
 
   drawTerrain(ctx, game);
+  drawRallyIndicators(ctx, game);
   drawEntities(ctx, game);
   drawPlacement(ctx, game, input.mouseWorld);
   drawDragBox(ctx, input);
@@ -166,6 +167,63 @@ function drawEntities(ctx: CanvasRenderingContext2D, game: Game): void {
       ctx.fillRect(s.x - 3 * z, s.y - r - 6 * z, 6 * z, 5 * z);
     }
     if (u.hp < u.maxHp) drawHpBar(ctx, s.x - r, s.y - r - 6, r * 2, u.hp / u.maxHp);
+  }
+}
+
+function drawRallyIndicators(ctx: CanvasRenderingContext2D, game: Game): void {
+  const { camera } = game;
+  for (const e of game.entities.values()) {
+    if (e.owner !== "player" || e.category !== "building" || !e.selected || !e.rally) continue;
+
+    const start = camera.worldToScreen(e.pos);
+    const end = camera.worldToScreen(e.rally);
+    const z = camera.zoom;
+    const flagW = 16 * z;
+    const flagH = 12 * z;
+    const poleH = 30 * z;
+
+    ctx.save();
+    ctx.strokeStyle = "rgba(245, 230, 168, 0.62)";
+    ctx.lineWidth = Math.max(1.5, 2 * z);
+    ctx.setLineDash([6 * z, 5 * z]);
+    ctx.beginPath();
+    ctx.moveTo(start.x, start.y);
+    ctx.lineTo(end.x, end.y);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.strokeStyle = "rgba(15, 24, 20, 0.72)";
+    ctx.lineWidth = Math.max(2, 3 * z);
+    ctx.beginPath();
+    ctx.moveTo(end.x, end.y);
+    ctx.lineTo(end.x, end.y - poleH);
+    ctx.stroke();
+
+    ctx.strokeStyle = COLORS.selection;
+    ctx.lineWidth = Math.max(1, 1.5 * z);
+    ctx.beginPath();
+    ctx.moveTo(end.x, end.y);
+    ctx.lineTo(end.x, end.y - poleH);
+    ctx.stroke();
+
+    ctx.fillStyle = COLORS.player;
+    ctx.beginPath();
+    ctx.moveTo(end.x, end.y - poleH);
+    ctx.lineTo(end.x + flagW, end.y - poleH + flagH * 0.32);
+    ctx.lineTo(end.x, end.y - poleH + flagH);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = COLORS.playerDark;
+    ctx.stroke();
+
+    ctx.fillStyle = "rgba(245, 230, 168, 0.18)";
+    ctx.strokeStyle = COLORS.selection;
+    ctx.lineWidth = Math.max(1, 1.5 * z);
+    ctx.beginPath();
+    ctx.arc(end.x, end.y, 7 * z, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
   }
 }
 
