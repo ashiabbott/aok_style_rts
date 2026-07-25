@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Codex artifact output (screenshots, smoke runs) -- never source
+output/
